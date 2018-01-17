@@ -14,8 +14,7 @@ import urllib
 
 from rgb2gray import rgb2gray
 
-act = ['Lorraine Braco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
-
+act = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
 
 
 
@@ -66,5 +65,3 @@ for a in act:
             
             print filename
             i += 1
-    
-    
