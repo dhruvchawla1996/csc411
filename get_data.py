@@ -14,10 +14,11 @@ import urllib
 
 from rgb2gray import rgb2gray
 
+# List of actors to get data for
 act = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
 
 
-
+# Functions
 
 def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
     '''From:
@@ -59,9 +60,20 @@ for a in act:
             #testfile.retrieve(line.split()[4], "uncropped/"+filename)
             #timeout is used to stop downloading images which take too long to download
             timeout(testfile.retrieve, (line.split()[4], "uncropped/"+filename), {}, 30)
+
+            crop_bbox = line.split()[5].split(',')
             if not os.path.isfile("uncropped/"+filename):
                 continue
 
+            try:
+                rgb_img = imread("uncropped/"+filename)
+                grayscale_img = rgb2gray(rgb_img)
+                cropped_img = grayscale_img[int(crop_bbox[1]):int(crop_bbox[3]), int(crop_bbox[0]):int(crop_bbox[2])]
+                resized_img = imresize(cropped_img, (32, 32))
+                imsave("cropped/"+filename, resized_img, cmap = plt.cm.gray)
+
+            except Exception as e:
+                print("e", filename)
             
             print filename
             i += 1
