@@ -1,4 +1,12 @@
+'''Download
+   Images for each actor specified in the act list
+   And store original images in uncropped/ 
+   And cropped 32x32 (according to bounding box) grayscale images in cropped/
+   
+   Requires: Empty folders uncropped/ and cropped/ and faces_subtext.txt containing dataset from FaceScrub
+'''
 
+# Imports
 from pylab import *
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,12 +25,13 @@ from rgb2gray import rgb2gray
 # List of actors to get data for
 act = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
 
-
-# Functions
-
+################################################################################
+# Timeout Function
+################################################################################
 def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
     '''From:
-    http://code.activestate.com/recipes/473878-timeout-function-using-threading/'''
+    http://code.activestate.com/recipes/473878-timeout-function-using-threading/
+    Manages download by aborting download if it's taking too long'''
     import threading
     class InterruptableThread(threading.Thread):
         def __init__(self):
@@ -62,6 +71,8 @@ for a in act:
             timeout(testfile.retrieve, (line.split()[4], "uncropped/"+filename), {}, 30)
 
             crop_bbox = line.split()[5].split(',')
+            
+            # Convert uncropped image to cropped 32x32 grayscale
             if not os.path.isfile("uncropped/"+filename):
                 continue
 
