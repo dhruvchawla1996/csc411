@@ -57,34 +57,36 @@ testfile = urllib.URLopener()
 
 #Note: you need to create the uncropped folder first in order 
 #for this to work
+def get_and_crop_images():
+    for a in act:
+        name = a.split()[1].lower()
+        i = 0
+        for line in open("faces_subset.txt"):
+            if a in line:
+                filename = name+str(i)+'.'+line.split()[4].split('.')[-1]
+                #A version without timeout (uncomment in case you need to
+                #unsupress exceptions, which timeout() does)
+                #testfile.retrieve(line.split()[4], "uncropped/"+filename)
+                #timeout is used to stop downloading images which take too long to download
+                timeout(testfile.retrieve, (line.split()[4], "uncropped/"+filename), {}, 45)
 
-for a in act:
-    name = a.split()[1].lower()
-    i = 0
-    for line in open("faces_subset.txt"):
-        if a in line:
-            filename = name+str(i)+'.'+line.split()[4].split('.')[-1]
-            #A version without timeout (uncomment in case you need to 
-            #unsupress exceptions, which timeout() does)
-            #testfile.retrieve(line.split()[4], "uncropped/"+filename)
-            #timeout is used to stop downloading images which take too long to download
-            timeout(testfile.retrieve, (line.split()[4], "uncropped/"+filename), {}, 30)
+                crop_bbox = line.split()[5].split(',')
 
-            crop_bbox = line.split()[5].split(',')
-            
-            # Convert uncropped image to cropped 32x32 grayscale
-            if not os.path.isfile("uncropped/"+filename):
-                continue
+                # Convert uncropped image to cropped 32x32 grayscale
+                if not os.path.isfile("uncropped/"+filename):
+                    continue
 
-            try:
-                rgb_img = imread("uncropped/"+filename)
-                grayscale_img = rgb2gray(rgb_img)
-                cropped_img = grayscale_img[int(crop_bbox[1]):int(crop_bbox[3]), int(crop_bbox[0]):int(crop_bbox[2])]
-                resized_img = imresize(cropped_img, (32, 32))
-                imsave("cropped/"+filename, resized_img, cmap = plt.cm.gray)
+                try:
+                    rgb_img = imread("uncropped/"+filename)
+                    grayscale_img = rgb2gray(rgb_img)
+                    cropped_img = grayscale_img[int(crop_bbox[1]):int(crop_bbox[3]), int(crop_bbox[0]):int(crop_bbox[2])]
+                    resized_img = imresize(cropped_img, (32, 32))
+                    imsave("cropped/"+filename, resized_img, cmap = plt.cm.gray)
 
-            except Exception as e:
-                print("e", filename)
-            
-            print filename
-            i += 1
+                except Exception as e:
+                    print(str(e))
+
+                print filename
+                i += 1
+
+get_and_crop_images()
