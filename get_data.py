@@ -88,5 +88,3 @@ def get_and_crop_images():
 
                 print filename
                 i += 1
-
-get_and_crop_images()
