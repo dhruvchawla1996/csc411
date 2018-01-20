@@ -33,7 +33,7 @@ def build_sets(actor):
             image_list.append(f)
 
     # Shuffle
-    np.random.seed(20)
+    np.random.seed(5)
     np.random.shuffle(image_list)
 
     # 10 images for testing and validation set each and the rest in training set
