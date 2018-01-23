@@ -11,6 +11,10 @@ import os
 from numpy.linalg import inv
 from numpy import linalg
 
+################################################################################
+# Binary Classification Functions
+################################################################################
+
 def f (x, y, theta):
 	x = np.transpose(x)
 	x = vstack((ones((1, x.shape[1])), x))
@@ -36,3 +40,7 @@ def grad_descent(f, df, x, y, init_t, alpha):
             print "Gradient: ", df(x, y, t), "\n"
         ite += 1
     return t
+
+################################################################################
+# Multi Classification Functions
+################################################################################
