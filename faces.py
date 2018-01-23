@@ -105,7 +105,7 @@ def part3():
 
         prediction = dot(theta.T, tr_img)
 
-        cost_fn += (1 - prediction)**2
+        cost_fn += (prediction)**2
 
         if linalg.norm(prediction) < 0.5: correct += 1
         total += 1
@@ -137,7 +137,7 @@ def part3():
 
         prediction = dot(theta.T, v_img)
 
-        cost_fn += (1 - prediction)**2
+        cost_fn += (prediction)**2
 
         if linalg.norm(prediction) < 0.5: correct += 1
         total += 1
@@ -201,7 +201,7 @@ def part5():
         i = 0
 
         for a in act_train:
-            for training_example in range(len(training_size)):
+            for training_example in range(training_size):
                 tr_img = imread("cropped/"+training_sets[a][training_example])
                 tr_img = rgb2gray(tr_img)
                 x[i] = reshape(np.ndarray.flatten(tr_img), [1, 1024])
@@ -210,12 +210,12 @@ def part5():
                 i += 1
 
         theta_init = np.zeros(1025)
-        theta = grad_descent(f, df, x, y, theta_init, 0.00001)
+        theta = grad_descent(f, df, x, y, theta_init, 0.0000001)
 
         # Performance on training set
         correct, total = 0, 0
         for a in act_train:
-            for training_example in range(len(training_size)):
+            for training_example in range(training_size):
                 tr_img = imread("cropped/"+training_sets[a][training_example])
                 tr_img = rgb2gray(tr_img)
                 tr_img = reshape(np.ndarray.flatten(tr_img), [1, 1024])
@@ -230,7 +230,7 @@ def part5():
 
                 total += 1
 
-        result_training_set.append(correct/total)
+        result_training_set.append(correct/float(total))
 
         # Performance on validation set
         correct, total = 0, 0
@@ -250,7 +250,7 @@ def part5():
 
                 total += 1
 
-        result_validation_set.append(correct/total)
+        result_validation_set.append(correct/float(total))
 
         # Performance on testing set
         correct, total = 0, 0
@@ -263,14 +263,14 @@ def part5():
 
                 prediction = dot(theta.T, t_img)
 
-                if act_train_gender[a] == 'male':
+                if act_test_gender[a] == 'male':
                     if linalg.norm(prediction) > 0.5: correct += 1
-                elif act_train_gender[a] == 'female':
+                elif act_test_gender[a] == 'female':
                     if linalg.norm(prediction) < 0.5: correct += 1
 
                 total += 1
 
-        result_testing_set.append(correct/total)
+        result_testing_set.append(correct/float(total))
 
     print(result_training_set)
     print(result_validation_set)
@@ -300,9 +300,9 @@ def part8():
 
 # part1()
 # part2()
-# part3()
+part3()
 # part4()
-part5()
+# part5()
 # part6()
 # part7()
 # part8()
