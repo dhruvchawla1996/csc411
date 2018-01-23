@@ -1,5 +1,5 @@
 '''CSC411: Project 1
-    Dhruv Chawla and Sabrina Lokman'''
+    Dhruv Chawla'''
 
 # Imports
 
@@ -26,7 +26,15 @@ from calculus import *
 # Part 1
 ################################################################################
 def part1():
-    get_and_crop_images()
+    # Actors for training and validation set
+    act = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
+
+    #get_and_crop_images(act)
+
+    # Actors for testing set (part 5)
+    act_test = ['Daniel Radcliffe', 'Gerard Butler', 'Michael Vartan', 'Kristin Chenoweth', 'Fran Drescher', 'America Ferrera']
+
+    get_and_crop_images(act_test)
 
 ################################################################################
 # Part 2
@@ -146,7 +154,38 @@ def part4():
 ################################################################################
 # Part 5
 ################################################################################
-def part5():
-    pass
+# def part5():
+#     # Actors for training and validation set
+#     act_train = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
+#     act_train_gender = ['male', 'male', 'male', 'female', 'female', 'female']
 
-part3()
+#     # Actors for testing set
+#     act_test = ['Daniel Radcliffe', 'Gerard Butler', 'Michael Vartan', 'Kristin Chenoweth', 'Fran Drescher', 'America Ferrera']
+#     act_test_gender = ['male', 'male', 'male', 'female', 'female', 'female']
+
+#     # Training size (images per actor)
+#     training_sizes = [5, 10, 20, 40, 50, 65]
+
+#     training_sets, validation_sets, testing_sets = [], [], []
+
+#     # Build training sets, validation sets and testing sets
+#     for a in act_train:
+#         a_name = a.split()[1].lower()
+#         training_set, validation_set, _ = build_sets(a_name)
+#         training_sets.append(_training_set)
+#         validation_sets.append(validation_set)
+
+#     for a in act_test:
+#         a_name = a.split()[1].lower()
+#         _1, _2, testing_set = build_sets(a_name)
+#         testing_sets.append(testing_set)
+
+#     # Results for correspoding training sizes
+#     result_training_set, result_validation_set, result_testing_set = [], [], []
+
+#     for training_size in training_sizes:
+#         # Train
+
+
+
+part1()

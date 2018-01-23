@@ -22,9 +22,6 @@ import urllib
 
 from rgb2gray import rgb2gray
 
-# List of actors to get data for
-act = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
-
 ################################################################################
 # Timeout Function
 ################################################################################
@@ -57,7 +54,7 @@ testfile = urllib.URLopener()
 
 #Note: you need to create the uncropped folder first in order 
 #for this to work
-def get_and_crop_images():
+def get_and_crop_images(act):
     for a in act:
         name = a.split()[1].lower()
         i = 0
