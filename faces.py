@@ -174,7 +174,7 @@ def part5():
                        'America Ferrera': 'female'}
 
     # Training size (images per actor)
-    training_sizes = [10, 50, 65, 100, 120]
+    training_sizes = [10, 50, 65, 100, 120, 150]
 
     training_sets, validation_sets, testing_sets = {}, {}, {}
 
@@ -187,8 +187,9 @@ def part5():
 
     for a in act_test:
         a_name = a.split()[1].lower()
-        _1, _2, testing_set = build_sets(a_name)
-        testing_sets[a] = testing_set
+        training_set, validation_set, testing_set = build_sets(a_name)
+        # Concatenate all list to make a bigger testing set
+        testing_sets[a] = training_set + validation_set + testing_set
 
     # Results for correspoding training sizes
     result_training_set, result_validation_set, result_testing_set = [], [], []
@@ -218,7 +219,7 @@ def part5():
                 i += 1
 
         theta_init = np.zeros(1025)
-        theta = grad_descent(f, df, x, y, theta_init, 0.000001, 5000)
+        theta = grad_descent(f, df, x, y, theta_init, 0.000001, 50000)
 
         # Performance on training set
         correct, total = 0, 0
