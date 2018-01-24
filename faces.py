@@ -79,7 +79,7 @@ def part3():
         i += 1
 
     theta_init = np.zeros(1025)
-    theta = grad_descent(f, df, x, y, theta_init, 0.00001)
+    theta = grad_descent(f, df, x, y, theta_init, 0.00001, 50000)
 
     # Performance on Training Set
     correct, total, cost_fn = 0, 0, 0
@@ -300,9 +300,9 @@ def part8():
 
 # part1()
 # part2()
-part3()
+# part3()
 # part4()
-# part5()
+part5()
 # part6()
 # part7()
 # part8()

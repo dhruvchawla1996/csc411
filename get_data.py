@@ -4,6 +4,7 @@
    And cropped 32x32 (according to bounding box) grayscale images in cropped/
    
    Requires: Empty folders uncropped/ and cropped/ and faces_subtext.txt containing dataset from FaceScrub
+             act: List of actors as in faces_subset.txt
 '''
 
 # Imports
