@@ -174,7 +174,7 @@ def part5():
                        'America Ferrera': 'female'}
 
     # Training size (images per actor)
-    training_sizes = [10, 50, 65, 100, 120, 150]
+    training_sizes = [10, 50, 65, 100, 120]
 
     training_sets, validation_sets, testing_sets = {}, {}, {}
 
