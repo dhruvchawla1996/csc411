@@ -196,11 +196,13 @@ def part5():
     for training_size in training_sizes:
         # Train 
         total_training_examples = 0
-        for a in act:
+        for a in act_train:
             total_training_examples += min(len(training_sets[a]), training_size)
 
         x = np.zeros((total_training_examples, 1024))
         y = np.zeros(total_training_examples)
+	
+	print("Training Size: "+str(total_training_examples))	
 
         i = 0
 
@@ -238,6 +240,7 @@ def part5():
 
                 total += 1
 
+	print(total)
         result_training_set.append(correct/float(total))
 
         # Performance on validation set

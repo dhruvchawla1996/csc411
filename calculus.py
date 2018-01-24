@@ -34,7 +34,7 @@ def grad_descent(f, df, x, y, init_t, alpha, max_iter = 20000):
     while norm(t - prev_t) >  EPS and ite < max_iter:
         prev_t = t.copy()
         t -= alpha*df(x, y, t)
-        if ite % 5000 == 0:
+        if ite % 5000 == 0 or ite == max_iter-1:
             print "Iter", ite
             print "Gradient: ", df(x, y, t), "\n"
         ite += 1
