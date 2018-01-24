@@ -158,11 +158,11 @@ def part5():
     # Actors for training and validation set
     act_train = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
     act_train_gender = {'Lorraine Bracco': 'female', 
-                        'Peri Gilpin': 'female', 
                         'Angie Harmon': 'female', 
                         'Alec Baldwin': 'male', 
                         'Bill Hader': 'male', 
-                        'Steve Carell': 'male'}
+                        'Steve Carell': 'male',
+                        'Peri Gilpin': 'female'}
 
     # Actors for testing set
     act_test = ['Daniel Radcliffe', 'Gerard Butler', 'Michael Vartan', 'Kristin Chenoweth', 'Fran Drescher', 'America Ferrera']
@@ -174,7 +174,7 @@ def part5():
                        'America Ferrera': 'female'}
 
     # Training size (images per actor)
-    training_sizes = [5, 10, 20, 40, 50, 65]
+    training_sizes = [10, 50, 65, 100, 120]
 
     training_sets, validation_sets, testing_sets = {}, {}, {}
 
@@ -195,13 +195,19 @@ def part5():
 
     for training_size in training_sizes:
         # Train 
-        x = np.zeros((training_size * len(act_train), 1024))
-        y = np.zeros(training_size * len(act_train))
+        total_training_examples = 0
+        for a in act:
+            total_training_examples += min(len(training_sets[a]), training_size)
+
+        x = np.zeros((total_training_examples, 1024))
+        y = np.zeros(total_training_examples)
 
         i = 0
 
         for a in act_train:
             for training_example in range(training_size):
+                if training_example >= len(training_sets[a]): break
+
                 tr_img = imread("cropped/"+training_sets[a][training_example])
                 tr_img = rgb2gray(tr_img)
                 x[i] = reshape(np.ndarray.flatten(tr_img), [1, 1024])
@@ -210,12 +216,14 @@ def part5():
                 i += 1
 
         theta_init = np.zeros(1025)
-        theta = grad_descent(f, df, x, y, theta_init, 0.0000001)
+        theta = grad_descent(f, df, x, y, theta_init, 0.000001, 5000)
 
         # Performance on training set
         correct, total = 0, 0
         for a in act_train:
             for training_example in range(training_size):
+                if training_example >= len(training_sets[a]): break
+                
                 tr_img = imread("cropped/"+training_sets[a][training_example])
                 tr_img = rgb2gray(tr_img)
                 tr_img = reshape(np.ndarray.flatten(tr_img), [1, 1024])
