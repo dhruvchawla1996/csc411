@@ -385,11 +385,18 @@ def part7():
 
     print("Validation Set Performance = "+str(correct)+"/"+str(total))
 
+    return theta
+
 ################################################################################
 # Part 8
 ################################################################################
 def part8():
-    pass
+    theta = part7()
+
+    for i in range(theta.shape[0]):
+        theta_i = np.delete(theta[i], 0)
+        theta_i = np.reshape(theta_i, (32, 32))
+        imsave("part8_"+str(i)+".jpg", theta_i, cmap = "RdBu")
 
 ################################################################################
 # Function Calls
