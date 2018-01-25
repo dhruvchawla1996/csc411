@@ -298,7 +298,92 @@ def part6():
 # Part 7
 ################################################################################
 def part7():
-    pass
+    act = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
+
+    # Build training, validation and testing sets
+    training_sets, validation_sets, testing_sets = {}, {}, {}
+
+    # Equalize each actor's training set to the least examples for any actor
+    training_examples_per_actor = 200
+    for a in act:
+        a_name = a.split()[1].lower()
+        training_set, validation_set, testing_set = build_sets(a_name)
+
+        training_examples_per_actor = min(training_examples_per_actor, len(training_set))
+
+        training_sets[a] = training_set
+        validation_sets[a] = validation_set
+        testing_sets[a] = testing_set
+
+    # Equalize training sets
+    for a in act:
+        training_sets[a] = training_sets[a][:training_examples_per_actor]
+
+    # Train
+    x = np.zeros((training_examples_per_actor * len(act), 1024))
+    y = np.zeros((training_examples_per_actor * len(act), len(act)))
+
+    i, a_i = 0
+
+    for a in act:
+        for tr in training_sets[a]:
+            tr_img = imread("cropped/"+tr)
+            tr_img = rgb2gray(tr_img)
+            
+            x[i] = reshape(np.ndarray.flatten(tr_img), [1, 1024])
+
+            y[i][a_i] = 1
+
+            i += 1
+
+        a_i += 1
+
+    theta_init = np.zeros(1025)
+    theta = grad_descent_muticlass(f_multiclass, df_multiclass, x, y, theta_init, 0.000001, 5000)
+
+    # Performance on training set
+    correct, total = 0, 0
+
+    a_i = 0
+    for a in act:
+        for tr in training_sets[a]:
+            tr_img = imread("cropped/"+tr)
+            tr_img = rgb2gray(tr_img)
+            tr_img = reshape(np.ndarray.flatten(tr_img), [1, 1024])
+            tr_img.insert(tr_img, 0, 1)
+
+            prediction = dot(theta, tr_img)
+            prediction = np.argmax(prediction)
+
+            if prediction == a_i: correct += 1
+
+            total += 1
+
+        a_i += 1
+
+    print("Training Set Performance = "+str(correct)+"/"+str(total))
+
+    # Performance on validation set
+    correct, total = 0, 0
+
+    a_i = 0
+    for a in act:
+        for v in validation_sets[a]:
+            v_img = imread("cropped/"+v)
+            v_img = rgb2gray(v_img)
+            v_img = reshape(np.ndarray.flatten(v_img), [1, 1024])
+            v_img.insert(v_img, 0, 1)
+
+            prediction = dot(theta, v_img)
+            prediction = np.argmax(prediction)
+
+            if prediction == a_i: correct += 1
+
+            total += 1
+
+        a_i += 1
+
+    print("Validation Set Performance = "+str(correct)+"/"+str(total))
 
 ################################################################################
 # Part 8
@@ -314,7 +399,7 @@ def part8():
 # part2()
 # part3()
 # part4()
-part5()
+# part5()
 # part6()
-# part7()
+part7()
 # part8()
