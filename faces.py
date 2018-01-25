@@ -193,6 +193,7 @@ def part5():
 
     # Results for correspoding training sizes
     result_training_set, result_validation_set, result_testing_set = [], [], []
+    actual_training_sizes = []
 
     for training_size in training_sizes:
         # Train 
@@ -202,8 +203,9 @@ def part5():
 
         x = np.zeros((total_training_examples, 1024))
         y = np.zeros(total_training_examples)
-	
-	print("Training Size: "+str(total_training_examples))	
+    
+        print("Training Size: "+str(total_training_examples))
+        actual_training_sizes.append(total_training_examples)
 
         i = 0
 
@@ -241,8 +243,8 @@ def part5():
 
                 total += 1
 
-	print(total)
-        result_training_set.append(correct/float(total))
+        print(total)
+        result_training_set.append(100.0 * correct/float(total))
 
         # Performance on validation set
         correct, total = 0, 0
@@ -262,7 +264,7 @@ def part5():
 
                 total += 1
 
-        result_validation_set.append(correct/float(total))
+        result_validation_set.append(100.0 * correct/float(total))
 
         # Performance on testing set
         correct, total = 0, 0
@@ -282,11 +284,22 @@ def part5():
 
                 total += 1
 
-        result_testing_set.append(correct/float(total))
+        result_testing_set.append(100.0 * correct/float(total))
 
     print(result_training_set)
     print(result_validation_set)
     print(result_testing_set)
+
+    # Plot graph
+    plt.plot(actual_training_sizes, result_training_set, color="k", linewidth=2, marker="o", label="Training Set")
+    plt.plot(actual_training_sizes, result_validation_set, color="b", linewidth=2, marker="o", label="Validation Set")
+    plt.plot(actual_training_sizes, result_testing_set, color="r", linewidth=2, marker="o", label="Testing Set")
+
+    plt.title("Training Size vs Performance")
+    plt.xlabel("Training Size")
+    plt.ylabel("Performance")
+    plt.legend()
+    plt.savefig("part5.jpg")
 
 ################################################################################
 # Part 6
@@ -406,7 +419,7 @@ def part8():
 # part2()
 # part3()
 # part4()
-# part5()
+part5()
 # part6()
-part7()
+# part7()
 # part8()
