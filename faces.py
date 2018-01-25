@@ -323,7 +323,7 @@ def part7():
     x = np.zeros((training_examples_per_actor * len(act), 1024))
     y = np.zeros((training_examples_per_actor * len(act), len(act)))
 
-    i, a_i = 0
+    i, a_i = 0, 0
 
     for a in act:
         for tr in training_sets[a]:
@@ -338,8 +338,8 @@ def part7():
 
         a_i += 1
 
-    theta_init = np.zeros(1025)
-    theta = grad_descent_muticlass(f_multiclass, df_multiclass, x, y, theta_init, 0.000001, 5000)
+    theta_init = np.zeros((len(act), 1025))
+    theta = grad_descent_multiclass(f_multiclass, df_multiclass, x, y, theta_init, 0.000001, 20000)
 
     # Performance on training set
     correct, total = 0, 0
@@ -350,7 +350,7 @@ def part7():
             tr_img = imread("cropped/"+tr)
             tr_img = rgb2gray(tr_img)
             tr_img = reshape(np.ndarray.flatten(tr_img), [1, 1024])
-            tr_img.insert(tr_img, 0, 1)
+            tr_img = np.insert(tr_img, 0, 1)
 
             prediction = dot(theta, tr_img)
             prediction = np.argmax(prediction)
@@ -372,7 +372,7 @@ def part7():
             v_img = imread("cropped/"+v)
             v_img = rgb2gray(v_img)
             v_img = reshape(np.ndarray.flatten(v_img), [1, 1024])
-            v_img.insert(v_img, 0, 1)
+            v_img = np.insert(v_img, 0, 1)
 
             prediction = dot(theta, v_img)
             prediction = np.argmax(prediction)
