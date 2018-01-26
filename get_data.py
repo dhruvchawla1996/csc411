@@ -20,6 +20,7 @@ import matplotlib.image as mpimg
 import os
 from scipy.ndimage import filters
 import urllib
+import hashlib
 
 from rgb2gray import rgb2gray
 
@@ -69,9 +70,14 @@ def get_and_crop_images(act):
                 timeout(testfile.retrieve, (line.split()[4], "uncropped/"+filename), {}, 45)
 
                 crop_bbox = line.split()[5].split(',')
+                sha256_hash = line.split()[6]
 
                 # Convert uncropped image to cropped 32x32 grayscale
                 if not os.path.isfile("uncropped/"+filename):
+                    continue
+
+                # Check for SHA256 hash
+                if not hashlib.sha256(open("uncropped/"+filename, 'rb').read()).hexdigest() == sha256_hash:
                     continue
 
                 try:
@@ -86,3 +92,32 @@ def get_and_crop_images(act):
 
                 print filename
                 i += 1
+
+def remove_bad_images():
+    bad_image_filenames = ["baldwin68",
+                            "bracco90",
+                            "bracco64",
+                            "butler131",
+                            "butler132",
+                            "carell93",
+                            "chenoweth29",
+                            "chenoweth80",
+                            "chenoweth94",
+                            "drescher106",
+                            "drescher109",
+                            "drescher124",
+                            "drescher88",
+                            "ferrera159",
+                            "ferrera123",
+                            "hader4",
+                            "hader63",
+                            "hader77",
+                            "hader98",
+                            "harmon50",
+                            "radcliffe28",
+                            "vartan59",
+                            "vartan72"]
+
+    for filename in bad_image_filenames:
+        if os.path.isfile("cropped/"+filename+".jpg"):
+            os.remove("cropped/"+filename+".jpg")

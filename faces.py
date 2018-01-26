@@ -29,12 +29,14 @@ def part1():
     # Actors for training and validation set
     act = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
 
-    #get_and_crop_images(act)
+    get_and_crop_images(act)
 
     # Actors for testing set (part 5)
     act_test = ['Daniel Radcliffe', 'Gerard Butler', 'Michael Vartan', 'Kristin Chenoweth', 'Fran Drescher', 'America Ferrera']
 
-    get_and_crop_images(act_test)
+    #get_and_crop_images(act_test)
+
+    remove_bad_images()
 
 ################################################################################
 # Part 2
@@ -47,7 +49,7 @@ def part2():
 ################################################################################
 # Part 3
 ################################################################################
-def part3():
+def part3(full_training_set = True, max_iterations = 5000):
     actor_0, actor_1 = 'Alec Baldwin', 'Steve Carell'
 
     a_0_name = actor_0.split()[1].lower()
@@ -55,6 +57,10 @@ def part3():
 
     a_1_name = actor_1.split()[1].lower()
     training_set_1, validation_set_1, testing_set_1 = build_sets(a_1_name)
+
+    if not full_training_set:
+        training_set_0 = training_set_0[:2]
+        training_set_1 = training_set_1[:2]
 
     total_training_examples = len(training_set_0) + len(training_set_1)
 
@@ -79,7 +85,7 @@ def part3():
         i += 1
 
     theta_init = np.zeros(1025)
-    theta = grad_descent(f, df, x, y, theta_init, 0.00001, 50000)
+    theta = grad_descent(f, df, x, y, theta_init, 0.00001, max_iterations)
 
     # Performance on Training Set
     correct, total, cost_fn = 0, 0, 0
@@ -145,11 +151,31 @@ def part3():
     print("Validation Set Performance = "+str(correct)+"/"+str(total))
     print("Cost Function value for validation set is "+str(cost_fn))
 
+    return theta
+
 ################################################################################
 # Part 4
 ################################################################################
 def part4():
-    pass
+    theta_4a_1, theta_4a_2 = part3(True), part3(False)
+
+    theta_4a_1 = np.delete(theta_4a_1, 0)
+    theta_4a_1 = np.reshape(theta_4a_1, (32, 32))
+    imsave("part4a_1.jpg", theta_4a_1, cmap = "RdBu")
+
+    theta_4a_2 = np.delete(theta_4a_2, 0)
+    theta_4a_2 = np.reshape(theta_4a_2, (32, 32))
+    imsave("part4a_2.jpg", theta_4a_2, cmap = "RdBu")
+
+    theta_4b_1, theta_4b_2 = part3(True), part3(True, 10)
+
+    theta_4b_1 = np.delete(theta_4b_1, 0)
+    theta_4b_1 = np.reshape(theta_4b_1, (32, 32))
+    imsave("part4b_1.jpg", theta_4b_1, cmap = "RdBu")
+
+    theta_4b_2 = np.delete(theta_4b_2, 0)
+    theta_4b_2 = np.reshape(theta_4b_2, (32, 32))
+    imsave("part4b_2.jpg", theta_4b_2, cmap = "RdBu")
 
 ################################################################################
 # Part 5
@@ -174,22 +200,23 @@ def part5():
                        'America Ferrera': 'female'}
 
     # Training size (images per actor)
-    training_sizes = [10, 50, 65, 100, 120]
+    training_sizes = [10, 20, 50, 100, 150]
 
     training_sets, validation_sets, testing_sets = {}, {}, {}
 
     # Build training sets, validation sets and testing sets
     for a in act_train:
         a_name = a.split()[1].lower()
-        training_set, validation_set, _ = build_sets(a_name)
-        training_sets[a] = training_set
-        validation_sets[a] = validation_set
+        training_set, validation_set, testing_set = build_sets(a_name)
+        # Concatenate all list to make a bigger testing set
+        training_sets[a] = training_set + validation_set + testing_set
 
     for a in act_test:
         a_name = a.split()[1].lower()
         training_set, validation_set, testing_set = build_sets(a_name)
-        # Concatenate all list to make a bigger testing set
-        testing_sets[a] = training_set + validation_set + testing_set
+        # Use six actors not used in training to make validation and testing sets
+        validation_sets[a] = validation_set
+        testing_sets[a] = testing_set
 
     # Results for correspoding training sizes
     result_training_set, result_validation_set, result_testing_set = [], [], []
@@ -221,7 +248,7 @@ def part5():
                 i += 1
 
         theta_init = np.zeros(1025)
-        theta = grad_descent(f, df, x, y, theta_init, 0.000001, 50000)
+        theta = grad_descent(f, df, x, y, theta_init, 0.000001, 80000)
 
         # Performance on training set
         correct, total = 0, 0
@@ -248,7 +275,7 @@ def part5():
 
         # Performance on validation set
         correct, total = 0, 0
-        for a in act_train:
+        for a in act_test:
             for validation_example in validation_sets[a]:
                 v_img = imread("cropped/"+validation_example)
                 v_img = rgb2gray(v_img)
@@ -257,9 +284,9 @@ def part5():
 
                 prediction = dot(theta.T, v_img)
 
-                if act_train_gender[a] == 'male':
+                if act_test_gender[a] == 'male':
                     if linalg.norm(prediction) > 0.5: correct += 1
-                elif act_train_gender[a] == 'female':
+                elif act_test_gender[a] == 'female':
                     if linalg.norm(prediction) < 0.5: correct += 1
 
                 total += 1
@@ -352,7 +379,7 @@ def part7():
         a_i += 1
 
     theta_init = np.zeros((len(act), 1025))
-    theta = grad_descent_multiclass(f_multiclass, df_multiclass, x, y, theta_init, 0.000001, 20000)
+    theta = grad_descent_multiclass(f_multiclass, df_multiclass, x, y, theta_init, 0.0000001, 150000)
 
     # Performance on training set
     correct, total = 0, 0
