@@ -348,16 +348,16 @@ def part6():
 
     np.random.seed(5)
     theta = np.random.rand(6, 1025)
-    theta_h = np.zeros((6, 1025))
 
     # h value
     h = 0.000001
 
-    total_elements = theta.shape[1] * theta.shape[1]
+    total_elements = theta.shape[0] * theta.shape[1]
     difference = 0
 
     for i in range(theta.shape[0]):
         for j in range(theta.shape[1]):
+            theta_h = np.zeros((6, 1025))
             theta_h[i][j] = h
 
             difference += ((f_multiclass(x, y, theta + theta_h) - f_multiclass(x, y, theta))/h) - df_multiclass(x, y, theta)[i][j]
