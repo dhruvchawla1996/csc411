@@ -37,6 +37,7 @@
 \usepackage{hyperref} % Used for linking to websites
 \usepackage{amsmath, amsthm, amssymb} % Required for writing equations
 \usepackage{pythonhighlight} % Required for including Python code
+\usepackage{siunitx} % Required for scientific notation
 
 % Margins
 \topmargin=-0.45in
@@ -259,7 +260,7 @@ A second function \texttt{remove\_bad\_images} can then be called to remove imag
 
 \noindent \textit{Splitting the dataset into training, validation and testing sets}\\
 
-The function \texttt{build\_sets} takes in the name of an actor (example: \textit{gilpin}) and returns three lists, \texttt{training\_set}, \texttt{validation\_set} and \texttt{testing\_set}. \texttt{validation\_set} and \texttt{testing\_set} are both 10 images each while \texttt{training\_set} is the remainder from the rest of the actor's dataset.\\
+The function \texttt{build\_sets()} in \texttt{build\_sets.py} takes in the name of an actor (example: \textit{gilpin}) and returns three lists, \texttt{training\_set}, \texttt{validation\_set} and \texttt{testing\_set}. \texttt{validation\_set} and \texttt{testing\_set} are both 10 images each while \texttt{training\_set} is the remainder from the rest of the actor's dataset.\\
 
 \textit{Note: All three lists are \textbf{non-overlapping}}\\
 
@@ -352,7 +353,7 @@ print("Validation Set Performance = "+str(correct)+"/"+str(total))
 print("Cost Function value for validation set is "+str(cost_fn))
 \end{python}
 
-\texttt{validation\_set\_0} and \texttt{validation\_set\_1} are validation sets for Alec Baldwin and Steve Carell respectively.\\
+\texttt{validation\_set\_0} and \texttt{validation\_set\_1} are validation sets for Alec Baldwin and Steve Carell respectively. \texttt{theta} is $\theta$ trained from the training set.\\
 
 A similar piece of code measures classifier performance on training sets.\\
 
@@ -403,6 +404,8 @@ If $\alpha$ was made too large, the python compiler would throw an overflow erro
 
 As can be seen, training with less iterations and with less training examples results in the $\theta$s resembling actual human faces more. This can be explained as training with more iterations and more training examples goes into the territory of overfitting and spurious details start showing up and we lose regular features.\\
 
+\textit{The above functionality is present in} \texttt{part4()} \textit{of} \texttt{faces.py}
+
 \end{homeworkProblem}
 \clearpage
 
@@ -429,6 +432,8 @@ As can be seen, training with less iterations and with less training examples re
 The performance on the training set stays at around 100\% while validation set performance reaches its maximum at around 120 training images and then drops by 2\% while the performance on test set starts dropping after 600 training images.\\
 
 The reduction in performance for the testing and validation set as the number of training examples increase clearly demonstrates overfitting.\\
+
+\textit{The above functionality is present in} \texttt{part5()} \textit{of} \texttt{faces.py}
 
 \end{homeworkProblem}
 \clearpage
@@ -518,6 +523,46 @@ def grad_descent_multiclass(f, df, x, y, init_t, alpha, max_iter = 20000):
 %	PART D
 \subsection{Part D}
 
+\textbf{Finite Difference Approximation}
+
+The code for this part is in \texttt{part6()} in \texttt{faces.py} and is reproduced here.\\
+
+\begin{python}
+# To build x and y for training set, let's pick a picture first
+actor = 'Lorraine Bracco'
+a_name = actor.split()[1].lower()
+training_set, _1, _2 = build_sets(a_name)
+
+x_img = imread("cropped/"+training_set[0])
+x_img = rgb2gray(x_img)
+
+x = reshape(np.ndarray.flatten(x_img), [1, 1024])
+y = np.zeros((1, 6))
+y[0][1] = 1
+
+np.random.seed(5)
+theta = np.random.rand(6, 1025)
+
+# h value
+h = 0.000001
+
+total_elements = theta.shape[0] * theta.shape[1]
+difference = 0
+
+for i in range(theta.shape[0]):
+    for j in range(theta.shape[1]):
+        theta_h = np.zeros((6, 1025))
+        theta_h[i][j] = h
+
+        difference += abs(((f_multiclass(x, y, theta + theta_h) - f_multiclass(x, y, theta))/h) - df_multiclass(x, y, theta)[i][j])
+
+print("Average difference in approximation: " + str(difference/total_elements))
+\end{python}
+
+The value of \texttt{h} was chosen to be $10^{-6}$ as it was very comparable to the value of $\alpha$ which ensures that the interval for calculating the derivative's approximation was finite enough to achieve a good accuracy (the target in this case was a 5 significant figure accuracy).\\
+
+The achieved accuracy was $\num{3.82297857034e-5}$ per element of $\theta$
+
 \end{homeworkProblem}
 \clearpage
 
@@ -540,7 +585,9 @@ A small value of $\alpha$ was chosen to obtain more accurate classifier performa
 
 To obtain label from the output of the model, we find the index of maximum element in \texttt{numpy.dot(theta, x)} and find the label that correspronds to that index in the training set.\\
 
-For example, if \texttt{numpy.dot(theta, x)} comes out to be \texttt{[0.1, 0.2, 0.38, 0.83, 0.56, 0.17]}, the 3\textsuperscript{rd} index has the highest element which corresponds to Alec Baldwin.
+For example, if \texttt{numpy.dot(theta, x)} comes out to be \texttt{[0.1, 0.2, 0.38, 0.83, 0.56, 0.17]}, the 3\textsuperscript{rd} index has the highest element which corresponds to Alec Baldwin.\\
+
+\textit{The above functionality is present in} \texttt{part7()} \textit{of} \texttt{faces.py}
 
 \end{homeworkProblem}
 \clearpage
@@ -594,6 +641,8 @@ For example, if \texttt{numpy.dot(theta, x)} comes out to be \texttt{[0.1, 0.2, 
 	\caption{Visualising $\theta$s for different actors in the training set}
 	\label{fig:fig4}
 \end{figure*}
+
+\textit{The above functionality is present in} \texttt{part8()} \textit{of} \texttt{faces.py}
 
 \end{homeworkProblem}
 \clearpage
