@@ -353,17 +353,16 @@ def part6():
     # h value
     h = 0.000001
 
-    # Let's modify an element of theta
-    i = 4
-    j = 25
+    total_elements = theta.shape[1] * theta.shape[1]
+    difference = 0
 
-    theta_h[i][j] = h
+    for i in range(theta.shape[0]):
+        for j in range(theta.shape[1]):
+            theta_h[i][j] = h
 
-    print("Finite Difference Approximation: ")
-    print((f_multiclass(x, y, theta + theta_h) - f_multiclass(x, y, theta))/h)
+            difference += ((f_multiclass(x, y, theta + theta_h) - f_multiclass(x, y, theta))/h) - df_multiclass(x, y, theta)[i][j]
 
-    print("Gradient Function: ")
-    print(df_multiclass(x, y, theta)[i][j])
+    print("Average difference in approximation: " + str(difference/total_elements))
 
 ################################################################################
 # Part 7
