@@ -47,7 +47,7 @@ def grad_descent(f, df, x, y, init_t, alpha, max_iter = 20000):
 def f_multiclass(x, y, theta):
     x = np.transpose(x)
     x = vstack((ones((1, x.shape[1])), x))
-    return sum( (y - dot(theta.T, x)) ** 2)
+    return sum( (y.T - dot(theta, x)) ** 2)
 
 def df_multiclass(x, y, theta):
     x = np.transpose(x)

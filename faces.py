@@ -348,7 +348,7 @@ def part6():
 
     np.random.seed(5)
     theta = np.random.rand(6, 1025)
-    theta_h = theta
+    theta_h = np.zeros((6, 1025))
 
     # h value
     h = 0.000001
@@ -357,10 +357,10 @@ def part6():
     i = 4
     j = 25
 
-    theta_h[i][j] += h
+    theta_h[i][j] = h
 
     print("Finite Difference Approximation: ")
-    print((f_multiclass(x, y, theta_h) - f_multiclass(x, y, theta))/h)
+    print((f_multiclass(x, y, theta + theta_h) - f_multiclass(x, y, theta))/h)
 
     print("Gradient Function: ")
     print(df_multiclass(x, y, theta)[i][j])
