@@ -34,7 +34,7 @@ def part1():
     # Actors for testing set (part 5)
     act_test = ['Daniel Radcliffe', 'Gerard Butler', 'Michael Vartan', 'Kristin Chenoweth', 'Fran Drescher', 'America Ferrera']
 
-    #get_and_crop_images(act_test)
+    get_and_crop_images(act_test)
 
     remove_bad_images()
 

@@ -3,7 +3,7 @@
    And store original images in uncropped/ 
    And cropped 32x32 (according to bounding box) grayscale images in cropped/
    
-   Requires: Empty folders uncropped/ and cropped/ and faces_subtext.txt containing dataset from FaceScrub
+   Requires: faces_subtext.txt containing dataset from FaceScrub
              act: List of actors as in faces_subset.txt
 '''
 
@@ -21,6 +21,7 @@ import os
 from scipy.ndimage import filters
 import urllib
 import hashlib
+import shutil
 
 from rgb2gray import rgb2gray
 
@@ -54,9 +55,23 @@ def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
 testfile = urllib.URLopener()            
 
 
-#Note: you need to create the uncropped folder first in order 
-#for this to work
 def get_and_crop_images(act):
+    '''Downloads images from faces_subset.txt
+    Stores raw images into ./uncropped and processes them into 32x32 grayscale images in ./cropped
+
+    Requires: faces_subset.txt as obtained from the FaceScrub dataset
+                act: list of actor names
+
+    Stores images as lastname_i.jpg. Ex: giplin1.jpg
+    '''
+    # Remove folders cropped/ and uncropped/
+    shutil.rmtree('./cropped')
+    shutil.rmtree('./uncropped')
+
+    # Create cropped/ and uncropped/
+    os.makedirs('cropped')
+    os.makedirs('uncropped')
+
     for a in act:
         name = a.split()[1].lower()
         i = 0
@@ -74,10 +89,6 @@ def get_and_crop_images(act):
 
                 # Convert uncropped image to cropped 32x32 grayscale
                 if not os.path.isfile("uncropped/"+filename):
-                    continue
-
-                # Check for SHA256 hash
-                if not hashlib.sha256(open("uncropped/"+filename, 'rb').read()).hexdigest() == sha256_hash:
                     continue
 
                 try:
