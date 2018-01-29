@@ -332,7 +332,38 @@ def part5():
 # Part 6
 ################################################################################
 def part6():
-    pass
+    # Part 6(d)
+
+    # To build x and y for training set, let's pick a picture first
+    actor = 'Lorraine Bracco'
+    a_name = actor.split()[1].lower()
+    training_set, _1, _2 = build_sets(a_name)
+
+    x_img = imread("cropped/"+training_set[0])
+    x_img = rgb2gray(x_img)
+
+    x = reshape(np.ndarray.flatten(x_img), [1, 1024])
+    y = np.zeros((1, 6))
+    y[0][1] = 1
+
+    np.random.seed(5)
+    theta = np.random.rand(1025, 6)
+    theta_h = theta
+
+    # h value
+    h = 0.000001
+
+    # Let's modify an element of theta
+    i = 25
+    j = 4
+
+    theta_h[i][j] += h
+
+    print("Finite Difference Approximation: ")
+    print((f_multiclass(x, y, theta_h) - f_multiclass(x, y, theta))/h)
+
+    print("Gradient Function: ")
+    print(df_multiclass(x, y, theta)[i][j])
 
 ################################################################################
 # Part 7
@@ -446,7 +477,7 @@ def part8():
 # part2()
 # part3()
 # part4()
-part5()
-# part6()
+# part5()
+part6()
 # part7()
 # part8()
