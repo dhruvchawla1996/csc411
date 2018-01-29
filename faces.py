@@ -360,7 +360,7 @@ def part6():
             theta_h = np.zeros((6, 1025))
             theta_h[i][j] = h
 
-            difference += ((f_multiclass(x, y, theta + theta_h) - f_multiclass(x, y, theta))/h) - df_multiclass(x, y, theta)[i][j]
+            difference += abs(((f_multiclass(x, y, theta + theta_h) - f_multiclass(x, y, theta))/h) - df_multiclass(x, y, theta)[i][j])
 
     print("Average difference in approximation: " + str(difference/total_elements))
 
