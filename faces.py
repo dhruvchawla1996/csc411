@@ -346,14 +346,24 @@ def part6():
     y = np.zeros((1, 6))
     y[0][1] = 1
 
+    np.random.seed(5)
+    theta = np.random.rand(6, 1025)
+    theta_h = np.zeros((6, 1025))
+
     # h value
     h = 0.000001
 
-    np.random.seed(5)
-    theta = np.random.rand(6, 1025)
-    theta_h = np.full((6, 1025), h)
+    # Let's modify an element of theta
+    i = 4
+    j = 25
 
-    print(((f_multiclass(x, y, theta + theta_h) - f_multiclass(x, y, theta))/h) - df_multiclass(x, y, theta))
+    theta_h[i][j] = h
+
+    print("Finite Difference Approximation: ")
+    print((f_multiclass(x, y, theta + theta_h) - f_multiclass(x, y, theta))/h)
+
+    print("Gradient Function: ")
+    print(df_multiclass(x, y, theta)[i][j])
 
 ################################################################################
 # Part 7
