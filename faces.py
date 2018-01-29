@@ -347,15 +347,15 @@ def part6():
     y[0][1] = 1
 
     np.random.seed(5)
-    theta = np.random.rand(1025, 6)
+    theta = np.random.rand(6, 1025)
     theta_h = theta
 
     # h value
     h = 0.000001
 
     # Let's modify an element of theta
-    i = 25
-    j = 4
+    i = 4
+    j = 25
 
     theta_h[i][j] += h
 
