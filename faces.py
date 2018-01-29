@@ -26,6 +26,8 @@ from calculus import *
 # Part 1
 ################################################################################
 def part1():
+    '''Requires faces_subset.txt
+    '''
     # Actors for training and validation set
     act = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
 
@@ -50,6 +52,15 @@ def part2():
 # Part 3
 ################################################################################
 def part3(full_training_set = True, max_iterations = 5000):
+    '''Returns: theta (trained using dataset)
+
+    Args:
+    full_training_set: True = all images of Steve Carell and Alec Baldwin 
+    excepting 20 images for testing and validation set
+                        False = 2 images each of both actors
+
+    max_iterations: iterations to run at max for gradient descent
+    '''
     actor_0, actor_1 = 'Alec Baldwin', 'Steve Carell'
 
     a_0_name = actor_0.split()[1].lower()
@@ -157,6 +168,7 @@ def part3(full_training_set = True, max_iterations = 5000):
 # Part 4
 ################################################################################
 def part4():
+    # Part A
     theta_4a_1, theta_4a_2 = part3(True), part3(False)
 
     theta_4a_1 = np.delete(theta_4a_1, 0)
@@ -167,6 +179,7 @@ def part4():
     theta_4a_2 = np.reshape(theta_4a_2, (32, 32))
     imsave("part4a_2.jpg", theta_4a_2, cmap = "RdBu")
 
+    # Part B
     theta_4b_1, theta_4b_2 = part3(True), part3(True, 10)
 
     theta_4b_1 = np.delete(theta_4b_1, 0)
@@ -368,6 +381,8 @@ def part6():
 # Part 7
 ################################################################################
 def part7():
+    '''Returns: theta 
+    '''
     act = ['Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
 
     # Build training, validation and testing sets
@@ -477,6 +492,6 @@ def part8():
 # part3()
 # part4()
 # part5()
-part6()
+# part6()
 # part7()
 # part8()

@@ -105,6 +105,9 @@ def get_and_crop_images(act):
                 i += 1
 
 def remove_bad_images():
+    '''Removes bad images from list (manually chosen)
+    Requires: cropped images in ./cropped
+    '''
     bad_image_filenames = ["baldwin68",
                             "bracco90",
                             "bracco64",
