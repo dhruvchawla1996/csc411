@@ -48,6 +48,10 @@ def part2():
     a_name = a.split()[1].lower()
     training_set, validation_set, testing_set = build_sets(a_name)
 
+    print(training_set)
+    print(validation_set)
+    print(testing_set)
+
 ################################################################################
 # Part 3
 ################################################################################
@@ -487,11 +491,11 @@ def part8():
 # Function Calls
 ################################################################################
 
-# part1()
-# part2()
-# part3()
-# part4()
-# part5()
-# part6()
-# part7()
-# part8()
+part1()
+part2()
+part3()
+part4()
+part5()
+part6()
+part7()
+part8()

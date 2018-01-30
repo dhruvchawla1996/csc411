@@ -65,12 +65,12 @@ def get_and_crop_images(act):
     Stores images as lastname_i.jpg. Ex: giplin1.jpg
     '''
     # Remove folders cropped/ and uncropped/
-    shutil.rmtree('./cropped')
-    shutil.rmtree('./uncropped')
+    if os.path.exists('./cropped'): shutil.rmtree('./cropped')
+    if os.path.exists('./uncropped'): shutil.rmtree('./uncropped')
 
     # Create cropped/ and uncropped/
-    os.makedirs('cropped')
-    os.makedirs('uncropped')
+    if not os.path.exists('./cropped'): os.makedirs('cropped')
+    if not os.path.exists('./uncropped'): os.makedirs('uncropped')
 
     for a in act:
         name = a.split()[1].lower()
